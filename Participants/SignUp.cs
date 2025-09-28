@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
 
 namespace Participants
 {
@@ -22,7 +23,6 @@ namespace Participants
             CustomizeComponents();
             SetupPlaceholderText();
             ApplyRoundedCorners();
-            signInButton.Click += SignInButton_Click;
             showPasswordButton.Click += ShowPasswordButton_Click;
             showRePasswordButton.Click += ShowRePasswordButton_Click;
             rightPanel.Resize += RightPanel_Resize;
@@ -106,13 +106,6 @@ namespace Participants
             signUpButton.FlatStyle = FlatStyle.Flat;
             signUpButton.FlatAppearance.BorderSize = 0;
             signUpButton.Cursor = Cursors.Hand;
-            signInButton.FlatStyle = FlatStyle.Flat;
-            signInButton.FlatAppearance.BorderSize = 0;
-            signInButton.Cursor = Cursors.Hand;
-            signInButton.BackColor = Color.RoyalBlue;
-            signInButton.ForeColor = Color.White;
-            signInButton.Font = new Font("Segoe UI", 10F);
-
             // Customize show password buttons
             showPasswordButton.FlatStyle = FlatStyle.Flat;
             showPasswordButton.FlatAppearance.BorderSize = 0;
@@ -293,7 +286,6 @@ namespace Participants
         {
             // Only apply rounded corners for buttons
             signUpButton.Paint += (s, e) => DrawRoundedButton(signUpButton, e);
-            signInButton.Paint += (s, e) => DrawRoundedButton(signInButton, e);
         }
 
         private void DrawRoundedButton(Button btn, PaintEventArgs e)
@@ -317,12 +309,51 @@ namespace Participants
             return path;
         }
 
-        private void SignInButton_Click(object sender, EventArgs e)
+        private void signUpButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            SignIn signIn = new SignIn();
-            signIn.FormClosed += (s, args) => this.Close();
-            signIn.Show();
+            string email = emailTextBox.Text;
+            string username = usernameTextBox.Text;
+            string password = PasswordHashing.HashPassword(passwordTextBox.Text);
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username))
+            {
+                MessageBox.Show("please fill up all the fields");
+
+            }
+            else if (IsValidGmail.GmailCheck(email) == false)
+            {
+                MessageBox.Show("please check your email");
+            }
+            else if (rePasswordTextBox.Text != passwordTextBox.Text)
+            {
+                MessageBox.Show("Please retype your password");
+            }
+            else
+            {
+                if (EmailAlreadyRegistered.isEmailRegistered(email))
+                {
+                    MessageBox.Show("email already registered, try a new email");
+                    return;
+                }
+                if (UsernameAlreadyRegistered.isUserRegistered(username))
+                {
+                    MessageBox.Show("Username already registered, try a new name");
+                    return;
+                }
+                using (SqlConnection conn = DatabaseConnection.GetConnection())
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("INSERT INTO LMSData (username, Email, password) VALUES (@Username, @Email, @Password)", conn);
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Password", password);
+                    cmd.ExecuteNonQuery();
+                }
+                MessageBox.Show("Signup Successful", "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SignIn log = new SignIn();
+                log.Show();
+                this.Hide();
+
+            }
         }
     }
 }

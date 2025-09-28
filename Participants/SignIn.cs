@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -203,6 +204,40 @@ namespace Participants
             path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
             path.CloseFigure();
             return path;
+        }
+
+        private void signInButton_Click(object sender, EventArgs e)
+        {
+            string email = emailTextBox.Text;
+            string password = passwordTextBox.Text;
+            using (SqlConnection conn = DatabaseConnection.GetConnection())
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT Password FROM LMSData WHERE Email = @Email", conn);
+                cmd.Parameters.AddWithValue("@Email", email);
+                object result = cmd.ExecuteScalar();
+
+                if (result == null || result == DBNull.Value)
+                {
+                    // No account with this email
+                    MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string storedHash = result.ToString();
+
+                bool ok = PasswordHashing.VerifyPassword(password, storedHash);
+
+                if (ok)
+                {
+                    MessageBox.Show("Login Successful", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

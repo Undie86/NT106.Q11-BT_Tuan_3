@@ -30,7 +30,6 @@
         {
             this.rightPanel = new System.Windows.Forms.Panel();
             this.mainPanel = new System.Windows.Forms.Panel();
-            this.signInButton = new System.Windows.Forms.Button();
             this.logoLabel = new System.Windows.Forms.Label();
             this.showRePasswordButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
@@ -47,7 +46,6 @@
             this.rePasswordTextBox = new System.Windows.Forms.TextBox();
             this.phoneLabel = new System.Windows.Forms.Label();
             this.phoneTextBox = new System.Windows.Forms.TextBox();
-            this.orLabel = new System.Windows.Forms.Label();
             this.signUpButton = new System.Windows.Forms.Button();
             this.showPasswordButton = new System.Windows.Forms.Button();
             this.leftPanel = new System.Windows.Forms.Panel();
@@ -70,7 +68,6 @@
             // mainPanel
             // 
             this.mainPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.mainPanel.Controls.Add(this.signInButton);
             this.mainPanel.Controls.Add(this.logoLabel);
             this.mainPanel.Controls.Add(this.showRePasswordButton);
             this.mainPanel.Controls.Add(this.titleLabel);
@@ -87,28 +84,12 @@
             this.mainPanel.Controls.Add(this.rePasswordTextBox);
             this.mainPanel.Controls.Add(this.phoneLabel);
             this.mainPanel.Controls.Add(this.phoneTextBox);
-            this.mainPanel.Controls.Add(this.orLabel);
             this.mainPanel.Controls.Add(this.signUpButton);
             this.mainPanel.Controls.Add(this.showPasswordButton);
             this.mainPanel.Location = new System.Drawing.Point(0, 0);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(474, 660);
             this.mainPanel.TabIndex = 21;
-            // 
-            // signInButton
-            // 
-            this.signInButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.signInButton.BackColor = System.Drawing.Color.RoyalBlue;
-            this.signInButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.signInButton.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.signInButton.ForeColor = System.Drawing.Color.White;
-            this.signInButton.Location = new System.Drawing.Point(30, 608);
-            this.signInButton.Name = "signInButton";
-            this.signInButton.Size = new System.Drawing.Size(422, 40);
-            this.signInButton.TabIndex = 13;
-            this.signInButton.Text = "Sign In";
-            this.signInButton.UseVisualStyleBackColor = false;
             // 
             // logoLabel
             // 
@@ -267,17 +248,6 @@
             this.phoneTextBox.Size = new System.Drawing.Size(422, 30);
             this.phoneTextBox.TabIndex = 14;
             // 
-            // orLabel
-            // 
-            this.orLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.orLabel.AutoSize = true;
-            this.orLabel.ForeColor = System.Drawing.Color.Gray;
-            this.orLabel.Location = new System.Drawing.Point(230, 588);
-            this.orLabel.Name = "orLabel";
-            this.orLabel.Size = new System.Drawing.Size(21, 17);
-            this.orLabel.TabIndex = 10;
-            this.orLabel.Text = "or";
-            // 
             // signUpButton
             // 
             this.signUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -292,6 +262,7 @@
             this.signUpButton.TabIndex = 9;
             this.signUpButton.Text = "Sign Up";
             this.signUpButton.UseVisualStyleBackColor = false;
+            this.signUpButton.Click += new System.EventHandler(this.signUpButton_Click);
             // 
             // showPasswordButton
             // 
@@ -368,7 +339,6 @@
 
         private System.Windows.Forms.Panel rightPanel;
         private System.Windows.Forms.Panel mainPanel;
-        private System.Windows.Forms.Button signInButton;
         private System.Windows.Forms.Label logoLabel;
         private System.Windows.Forms.Button showRePasswordButton;
         private System.Windows.Forms.Label titleLabel;
@@ -385,7 +355,6 @@
         private System.Windows.Forms.TextBox rePasswordTextBox;
         private System.Windows.Forms.Label phoneLabel;
         private System.Windows.Forms.TextBox phoneTextBox;
-        private System.Windows.Forms.Label orLabel;
         private System.Windows.Forms.Button signUpButton;
         private System.Windows.Forms.Button showPasswordButton;
         private System.Windows.Forms.Panel leftPanel;
