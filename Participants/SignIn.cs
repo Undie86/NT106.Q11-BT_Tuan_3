@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace Participants
 {
-    public partial class Login : Form
+    public partial class SignIn : Form
     {
         private bool passwordVisible = false;
 
-        public Login()
+        public SignIn()
         {
             InitializeComponent();
             CustomizeComponents();
@@ -18,6 +18,15 @@ namespace Participants
             showPasswordButton.Click += ShowPasswordButton_Click;
             rightPanel.Resize += rightPanel_Resize;
             rightPanel_Resize(this, EventArgs.Empty);
+            signUpButton.Click += SignUpButton_Click;
+        }
+
+        private void SignUpButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            SignUp signUp = new SignUp();
+            signUp.FormClosed += (s, args) => this.Close();
+            signUp.Show();
         }
 
         private void rightPanel_Resize(object sender, EventArgs e)
@@ -61,8 +70,9 @@ namespace Participants
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.MaximizeBox = true;
             
-            emailTextBox.BorderStyle = BorderStyle.None;
-            passwordTextBox.BorderStyle = BorderStyle.None;
+            // Apply rounded corners to text boxes
+            ApplyRoundedCornersToTextBoxes();
+            
             signInButton.FlatStyle = FlatStyle.Flat;
             signInButton.FlatAppearance.BorderSize = 0;
             signInButton.Cursor = Cursors.Hand;
@@ -77,6 +87,49 @@ namespace Participants
             showPasswordButton.FlatAppearance.BorderSize = 0;
             showPasswordButton.Text = "👁";
             showPasswordButton.Font = new Font("Segoe UI", 10F);
+        }
+
+        private void ApplyRoundedCornersToTextBoxes()
+        {
+            int radius = 10;
+            
+            // Apply rounded corners to text boxes
+            emailTextBox.Paint += (s, e) => DrawRoundedTextBox(emailTextBox, e, radius);
+            passwordTextBox.Paint += (s, e) => DrawRoundedTextBox(passwordTextBox, e, radius);
+            
+            // Set regions for rounded appearance
+            using (var path = GetRoundedRectPath(new Rectangle(0, 0, emailTextBox.Width, emailTextBox.Height), radius))
+            {
+                emailTextBox.Region = new Region(path);
+            }
+            using (var path = GetRoundedRectPath(new Rectangle(0, 0, passwordTextBox.Width, passwordTextBox.Height), radius))
+            {
+                passwordTextBox.Region = new Region(path);
+            }
+            
+            // Handle resize events to maintain rounded corners
+            emailTextBox.Resize += (s, e) =>
+            {
+                using (var path = GetRoundedRectPath(new Rectangle(0, 0, emailTextBox.Width, emailTextBox.Height), radius))
+                {
+                    emailTextBox.Region = new Region(path);
+                }
+            };
+            passwordTextBox.Resize += (s, e) =>
+            {
+                using (var path = GetRoundedRectPath(new Rectangle(0, 0, passwordTextBox.Width, passwordTextBox.Height), radius))
+                {
+                    passwordTextBox.Region = new Region(path);
+                }
+            };
+        }
+
+        private void DrawRoundedTextBox(TextBox textBox, PaintEventArgs e, int radius)
+        {
+            using (var path = GetRoundedRectPath(new Rectangle(0, 0, textBox.Width, textBox.Height), radius))
+            {
+                textBox.Region = new Region(path);
+            }
         }
 
         private void SetupPlaceholderText()

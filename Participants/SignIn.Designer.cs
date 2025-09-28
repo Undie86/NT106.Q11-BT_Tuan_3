@@ -1,6 +1,6 @@
 ﻿namespace Participants
 {
-    partial class Login
+    partial class SignIn
     {
         /// <summary>
         /// Required designer variable.
@@ -245,7 +245,7 @@
             this.mainPanel.Controls.Add(this.orLabel);
             this.mainPanel.Controls.Add(this.forgotPasswordLink);
             this.mainPanel.Controls.Add(this.signInButton);
-            this.mainPanel.Location = new System.Drawing.Point(52, 12);
+            this.mainPanel.Location = new System.Drawing.Point(-18, 12);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(474, 560);
             this.mainPanel.TabIndex = 21;
@@ -256,10 +256,10 @@
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rightPanel.Location = new System.Drawing.Point(600, 0);
             this.rightPanel.Name = "rightPanel";
-            this.rightPanel.Size = new System.Drawing.Size(672, 584);
+            this.rightPanel.Size = new System.Drawing.Size(532, 584);
             this.rightPanel.TabIndex = 22;
             // 
-            // Login
+            // SignIn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -270,9 +270,9 @@
             this.Controls.Add(this.leftPanel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.MinimumSize = new System.Drawing.Size(1150, 600);
-            this.Name = "Login";
+            this.Name = "SignIn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Login";
+            this.Text = "Sign In";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.leftPanel.ResumeLayout(false);
             this.leftPanel.PerformLayout();
