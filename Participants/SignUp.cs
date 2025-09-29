@@ -316,12 +316,12 @@ namespace Participants
             string password = PasswordHashing.HashPassword(passwordTextBox.Text);
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(fullnameTextBox.Text) || string.IsNullOrWhiteSpace(rePasswordTextBox.Text))
             {
-                MessageBox.Show("please fill up all the fields");
+                MessageBox.Show("Please fill up all the fields");
 
             }
             else if (IsValidGmail.GmailCheck(email) == false)
             {
-                MessageBox.Show("please check your email");
+                MessageBox.Show("Please check your email");
             }
             else if (rePasswordTextBox.Text != passwordTextBox.Text)
             {
@@ -331,12 +331,12 @@ namespace Participants
             {
                 if (EmailAlreadyRegistered.isEmailRegistered(email))
                 {
-                    MessageBox.Show("email already registered, try a new email");
+                    MessageBox.Show("Email was already registered, try a new email");
                     return;
                 }
                 if (UsernameAlreadyRegistered.isUserRegistered(username))
                 {
-                    MessageBox.Show("Username already registered, try a new name");
+                    MessageBox.Show("Username was already registered, try a new name");
                     return;
                 }
                 using (SqlConnection conn = DatabaseConnection.GetConnection())
