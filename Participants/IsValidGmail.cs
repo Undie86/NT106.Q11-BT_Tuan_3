@@ -11,8 +11,8 @@ namespace Participants
     {
         public static bool GmailCheck(string email)
         {
-            if (string.IsNullOrWhiteSpace(email))
-                return false;
+           // if (string.IsNullOrWhiteSpace(email))
+           //     return false;
 
             // Regex chuẩn kiểm tra email
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";

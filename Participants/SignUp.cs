@@ -314,7 +314,7 @@ namespace Participants
             string email = emailTextBox.Text;
             string username = usernameTextBox.Text;
             string password = PasswordHashing.HashPassword(passwordTextBox.Text);
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(fullnameTextBox.Text) || string.IsNullOrWhiteSpace(rePasswordTextBox.Text))
             {
                 MessageBox.Show("please fill up all the fields");
 

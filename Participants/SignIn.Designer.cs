@@ -32,7 +32,7 @@
             this.titleLabel = new System.Windows.Forms.Label();
             this.welcomeLabel = new System.Windows.Forms.Label();
             this.emailLabel = new System.Windows.Forms.Label();
-            this.emailTextBox = new System.Windows.Forms.TextBox();
+            this.usernameTextBox = new System.Windows.Forms.TextBox();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
             this.rememberCheckBox = new System.Windows.Forms.CheckBox();
@@ -87,19 +87,19 @@
             this.emailLabel.AutoSize = true;
             this.emailLabel.Location = new System.Drawing.Point(27, 178);
             this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size(42, 17);
+            this.emailLabel.Size = new System.Drawing.Size(73, 17);
             this.emailLabel.TabIndex = 3;
-            this.emailLabel.Text = "Email";
+            this.emailLabel.Text = "Username";
             // 
-            // emailTextBox
+            // usernameTextBox
             // 
-            this.emailTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.usernameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.emailTextBox.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.emailTextBox.Location = new System.Drawing.Point(30, 198);
-            this.emailTextBox.Name = "emailTextBox";
-            this.emailTextBox.Size = new System.Drawing.Size(422, 30);
-            this.emailTextBox.TabIndex = 4;
+            this.usernameTextBox.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.usernameTextBox.Location = new System.Drawing.Point(30, 198);
+            this.usernameTextBox.Name = "usernameTextBox";
+            this.usernameTextBox.Size = new System.Drawing.Size(422, 30);
+            this.usernameTextBox.TabIndex = 4;
             // 
             // passwordLabel
             // 
@@ -239,7 +239,7 @@
             this.mainPanel.Controls.Add(this.titleLabel);
             this.mainPanel.Controls.Add(this.welcomeLabel);
             this.mainPanel.Controls.Add(this.emailLabel);
-            this.mainPanel.Controls.Add(this.emailTextBox);
+            this.mainPanel.Controls.Add(this.usernameTextBox);
             this.mainPanel.Controls.Add(this.passwordLabel);
             this.mainPanel.Controls.Add(this.passwordTextBox);
             this.mainPanel.Controls.Add(this.rememberCheckBox);
@@ -290,7 +290,7 @@
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.Label welcomeLabel;
         private System.Windows.Forms.Label emailLabel;
-        private System.Windows.Forms.TextBox emailTextBox;
+        private System.Windows.Forms.TextBox usernameTextBox;
         private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.TextBox passwordTextBox;
         private System.Windows.Forms.CheckBox rememberCheckBox;

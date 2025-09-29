@@ -8,6 +8,10 @@ namespace Participants
 {
     public partial class SignIn : Form
     {
+        private int failedAttempts = 0;              // number of failed attemps
+        private int maxAttempts = 5;                 // max try
+        private DateTime lockoutEndTime = DateTime.MinValue;
+        private int lockoutSeconds = 60;             // lock time
         private bool passwordVisible = false;
 
         public SignIn()
@@ -95,13 +99,13 @@ namespace Participants
             int radius = 10;
             
             // Apply rounded corners to text boxes
-            emailTextBox.Paint += (s, e) => DrawRoundedTextBox(emailTextBox, e, radius);
+            usernameTextBox.Paint += (s, e) => DrawRoundedTextBox(usernameTextBox, e, radius);
             passwordTextBox.Paint += (s, e) => DrawRoundedTextBox(passwordTextBox, e, radius);
             
             // Set regions for rounded appearance
-            using (var path = GetRoundedRectPath(new Rectangle(0, 0, emailTextBox.Width, emailTextBox.Height), radius))
+            using (var path = GetRoundedRectPath(new Rectangle(0, 0, usernameTextBox.Width, usernameTextBox.Height), radius))
             {
-                emailTextBox.Region = new Region(path);
+                usernameTextBox.Region = new Region(path);
             }
             using (var path = GetRoundedRectPath(new Rectangle(0, 0, passwordTextBox.Width, passwordTextBox.Height), radius))
             {
@@ -109,11 +113,11 @@ namespace Participants
             }
             
             // Handle resize events to maintain rounded corners
-            emailTextBox.Resize += (s, e) =>
+            usernameTextBox.Resize += (s, e) =>
             {
-                using (var path = GetRoundedRectPath(new Rectangle(0, 0, emailTextBox.Width, emailTextBox.Height), radius))
+                using (var path = GetRoundedRectPath(new Rectangle(0, 0, usernameTextBox.Width, usernameTextBox.Height), radius))
                 {
-                    emailTextBox.Region = new Region(path);
+                    usernameTextBox.Region = new Region(path);
                 }
             };
             passwordTextBox.Resize += (s, e) =>
@@ -136,22 +140,22 @@ namespace Participants
         private void SetupPlaceholderText()
         {
             // Email placeholder
-            emailTextBox.Text = "Enter your email";
-            emailTextBox.ForeColor = Color.Gray;
-            emailTextBox.GotFocus += (s, e) =>
+            usernameTextBox.Text = "Enter your email";
+            usernameTextBox.ForeColor = Color.Gray;
+            usernameTextBox.GotFocus += (s, e) =>
             {
-                if (emailTextBox.Text == "Enter your email")
+                if (usernameTextBox.Text == "Enter your email")
                 {
-                    emailTextBox.Text = "";
-                    emailTextBox.ForeColor = Color.Black;
+                    usernameTextBox.Text = "";
+                    usernameTextBox.ForeColor = Color.Black;
                 }
             };
-            emailTextBox.LostFocus += (s, e) =>
+            usernameTextBox.LostFocus += (s, e) =>
             {
-                if (string.IsNullOrWhiteSpace(emailTextBox.Text))
+                if (string.IsNullOrWhiteSpace(usernameTextBox.Text))
                 {
-                    emailTextBox.Text = "Enter your email";
-                    emailTextBox.ForeColor = Color.Gray;
+                    usernameTextBox.Text = "Enter your email";
+                    usernameTextBox.ForeColor = Color.Gray;
                 }
             };
             // Password placeholder
@@ -208,19 +212,26 @@ namespace Participants
 
         private void signInButton_Click(object sender, EventArgs e)
         {
-            string email = emailTextBox.Text;
+            string username = usernameTextBox.Text;
             string password = passwordTextBox.Text;
+
+            // Check the account is locking or not
+            if (DateTime.Now < lockoutEndTime)
+            {
+                double secondsLeft = (lockoutEndTime - DateTime.Now).TotalSeconds;
+                MessageBox.Show($"Your account has been locked for {Math.Ceiling(secondsLeft)} seccond(s).");
+                return;
+            }
+
             using (SqlConnection conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
-
-                SqlCommand cmd = new SqlCommand("SELECT Password FROM LMSData WHERE Email = @Email", conn);
-                cmd.Parameters.AddWithValue("@Email", email);
+                SqlCommand cmd = new SqlCommand("SELECT Password FROM LMSData WHERE username = @Username", conn);
+                cmd.Parameters.AddWithValue("@Username", username);
                 object result = cmd.ExecuteScalar();
 
                 if (result == null || result == DBNull.Value)
                 {
-                    // No account with this email
                     MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -232,10 +243,24 @@ namespace Participants
                 if (ok)
                 {
                     MessageBox.Show("Login Successful", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    failedAttempts = 0; //reset again
                 }
                 else
                 {
-                    MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Avoid Brute Force, lock account if failed  5 times in 60s
+                    failedAttempts++;
+                    if (failedAttempts >= maxAttempts)
+                    {
+                        lockoutEndTime = DateTime.Now.AddSeconds(lockoutSeconds);
+                        failedAttempts = 0; // reset again
+                        MessageBox.Show($"Wrong password {maxAttempts} time(s). Your account has been locked for {lockoutSeconds} seccond(s).");
+                    }
+                    else
+                    {
+                        int attemptsLeft = maxAttempts - failedAttempts;
+                        MessageBox.Show($"Invalid login credentials. You have {attemptsLeft} more try.");
+                    }
                 }
             }
         }
