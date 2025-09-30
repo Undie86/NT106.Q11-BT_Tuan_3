@@ -314,7 +314,6 @@
         private System.Windows.Forms.Panel rightPanel;
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.Label logoLabel;
-        private System.Windows.Forms.Button showRePasswordButton;
         private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.Label welcomeLabel;
         private System.Windows.Forms.Label fullnameLabel;
@@ -330,7 +329,6 @@
         private System.Windows.Forms.Label phoneLabel;
         private System.Windows.Forms.TextBox phoneTextBox;
         private System.Windows.Forms.Button signUpButton;
-        private System.Windows.Forms.Button showPasswordButton;
         private System.Windows.Forms.Panel leftPanel;
         private System.Windows.Forms.Label meaningfulLabel;
         private System.Windows.Forms.Label buildingLabel;

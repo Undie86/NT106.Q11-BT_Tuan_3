@@ -46,7 +46,6 @@ namespace Participants
                 {
                     passwordTextBox.PasswordChar = '\0';
                 }
-                showPasswordButton.Text = "🙈";
             }
             else
             {
@@ -58,39 +57,8 @@ namespace Participants
                 {
                     passwordTextBox.PasswordChar = '●';
                 }
-                showPasswordButton.Text = "👁";
             }
         }
-
-        private void ShowRePasswordButton_Click(object sender, EventArgs e)
-        {
-            rePasswordVisible = !rePasswordVisible;
-            if (rePasswordVisible)
-            {
-                if (rePasswordTextBox.Text == "Re-enter your password")
-                {
-                    rePasswordTextBox.PasswordChar = '\0';
-                }
-                else
-                {
-                    rePasswordTextBox.PasswordChar = '\0';
-                }
-                showRePasswordButton.Text = "🙈";
-            }
-            else
-            {
-                if (rePasswordTextBox.Text == "Re-enter your password")
-                {
-                    rePasswordTextBox.PasswordChar = '\0';
-                }
-                else
-                {
-                    rePasswordTextBox.PasswordChar = '●';
-                }
-                showRePasswordButton.Text = "👁";
-            }
-        }
-
         private void CustomizeComponents()
         {
             // Change these settings to allow resizing

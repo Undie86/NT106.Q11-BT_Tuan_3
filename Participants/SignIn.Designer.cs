@@ -288,7 +288,6 @@
         private System.Windows.Forms.Panel leftPanel;
         private System.Windows.Forms.Label meaningfulLabel;
         private System.Windows.Forms.Label buildingLabel;
-        private System.Windows.Forms.Button showPasswordButton;
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.Panel rightPanel;
     }
