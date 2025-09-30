@@ -20,7 +20,6 @@ namespace Participants
             CustomizeComponents();
             SetupPlaceholderText();
             ApplyRoundedCorners();
-            showPasswordButton.Click += ShowPasswordButton_Click;
             rightPanel.Resize += rightPanel_Resize;
             rightPanel_Resize(this, EventArgs.Empty);
             signUpButton.Click += SignUpButton_Click;
@@ -39,36 +38,6 @@ namespace Participants
             mainPanel.Left = (rightPanel.Width - mainPanel.Width) / 2;
             mainPanel.Top = (rightPanel.Height - mainPanel.Height) / 2;
         }
-
-        private void ShowPasswordButton_Click(object sender, EventArgs e)
-        {
-            passwordVisible = !passwordVisible;
-            if (passwordVisible)
-            {
-                if (passwordTextBox.Text == "Enter your Password")
-                {
-                    passwordTextBox.PasswordChar = '\0';
-                }
-                else
-                {
-                    passwordTextBox.PasswordChar = '\0';
-                }
-                showPasswordButton.Text = "🙈";
-            }
-            else
-            {
-                if (passwordTextBox.Text == "Enter your Password")
-                {
-                    passwordTextBox.PasswordChar = '\0';
-                }
-                else
-                {
-                    passwordTextBox.PasswordChar = '●';
-                }
-                showPasswordButton.Text = "👁";
-            }
-        }
-
         private void CustomizeComponents()
         {
             // Change these settings to allow resizing
@@ -88,10 +57,6 @@ namespace Participants
             signUpButton.ForeColor = Color.White;
             signUpButton.Font = new Font("Segoe UI", 10F);
             forgotPasswordLink.Cursor = Cursors.Hand;
-            showPasswordButton.FlatStyle = FlatStyle.Flat;
-            showPasswordButton.FlatAppearance.BorderSize = 0;
-            showPasswordButton.Text = "👁";
-            showPasswordButton.Font = new Font("Segoe UI", 10F);
         }
 
         private void ApplyRoundedCornersToTextBoxes()

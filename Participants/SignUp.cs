@@ -23,8 +23,6 @@ namespace Participants
             CustomizeComponents();
             SetupPlaceholderText();
             ApplyRoundedCorners();
-            showPasswordButton.Click += ShowPasswordButton_Click;
-            showRePasswordButton.Click += ShowRePasswordButton_Click;
             rightPanel.Resize += RightPanel_Resize;
             RightPanel_Resize(this, EventArgs.Empty);
         }
@@ -106,15 +104,6 @@ namespace Participants
             signUpButton.FlatStyle = FlatStyle.Flat;
             signUpButton.FlatAppearance.BorderSize = 0;
             signUpButton.Cursor = Cursors.Hand;
-            // Customize show password buttons
-            showPasswordButton.FlatStyle = FlatStyle.Flat;
-            showPasswordButton.FlatAppearance.BorderSize = 0;
-            showPasswordButton.Text = "👁";
-            showPasswordButton.Font = new Font("Segoe UI", 10F);
-            showRePasswordButton.FlatStyle = FlatStyle.Flat;
-            showRePasswordButton.FlatAppearance.BorderSize = 0;
-            showRePasswordButton.Text = "👁";
-            showRePasswordButton.Font = new Font("Segoe UI", 10F);
         }
 
         private void ApplyRoundedCornersToTextBoxes()

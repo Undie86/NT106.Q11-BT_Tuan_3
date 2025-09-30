@@ -31,7 +31,6 @@
             this.rightPanel = new System.Windows.Forms.Panel();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.logoLabel = new System.Windows.Forms.Label();
-            this.showRePasswordButton = new System.Windows.Forms.Button();
             this.titleLabel = new System.Windows.Forms.Label();
             this.welcomeLabel = new System.Windows.Forms.Label();
             this.fullnameLabel = new System.Windows.Forms.Label();
@@ -47,7 +46,6 @@
             this.phoneLabel = new System.Windows.Forms.Label();
             this.phoneTextBox = new System.Windows.Forms.TextBox();
             this.signUpButton = new System.Windows.Forms.Button();
-            this.showPasswordButton = new System.Windows.Forms.Button();
             this.leftPanel = new System.Windows.Forms.Panel();
             this.meaningfulLabel = new System.Windows.Forms.Label();
             this.buildingLabel = new System.Windows.Forms.Label();
@@ -69,7 +67,6 @@
             // 
             this.mainPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mainPanel.Controls.Add(this.logoLabel);
-            this.mainPanel.Controls.Add(this.showRePasswordButton);
             this.mainPanel.Controls.Add(this.titleLabel);
             this.mainPanel.Controls.Add(this.welcomeLabel);
             this.mainPanel.Controls.Add(this.fullnameLabel);
@@ -85,7 +82,6 @@
             this.mainPanel.Controls.Add(this.phoneLabel);
             this.mainPanel.Controls.Add(this.phoneTextBox);
             this.mainPanel.Controls.Add(this.signUpButton);
-            this.mainPanel.Controls.Add(this.showPasswordButton);
             this.mainPanel.Location = new System.Drawing.Point(0, 0);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(474, 660);
@@ -101,18 +97,6 @@
             this.logoLabel.Size = new System.Drawing.Size(82, 37);
             this.logoLabel.TabIndex = 0;
             this.logoLabel.Text = "Logo";
-            // 
-            // showRePasswordButton
-            // 
-            this.showRePasswordButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showRePasswordButton.FlatAppearance.BorderSize = 0;
-            this.showRePasswordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showRePasswordButton.Location = new System.Drawing.Point(422, 439);
-            this.showRePasswordButton.Name = "showRePasswordButton";
-            this.showRePasswordButton.Size = new System.Drawing.Size(30, 30);
-            this.showRePasswordButton.TabIndex = 20;
-            this.showRePasswordButton.Text = "👁";
-            this.showRePasswordButton.UseVisualStyleBackColor = true;
             // 
             // titleLabel
             // 
@@ -207,7 +191,8 @@
             this.passwordTextBox.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.passwordTextBox.Location = new System.Drawing.Point(30, 378);
             this.passwordTextBox.Name = "passwordTextBox";
-            this.passwordTextBox.Size = new System.Drawing.Size(392, 30);
+            this.passwordTextBox.PasswordChar = '*';
+            this.passwordTextBox.Size = new System.Drawing.Size(422, 30);
             this.passwordTextBox.TabIndex = 10;
             // 
             // rePasswordLabel
@@ -226,7 +211,8 @@
             this.rePasswordTextBox.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.rePasswordTextBox.Location = new System.Drawing.Point(30, 438);
             this.rePasswordTextBox.Name = "rePasswordTextBox";
-            this.rePasswordTextBox.Size = new System.Drawing.Size(392, 30);
+            this.rePasswordTextBox.PasswordChar = '*';
+            this.rePasswordTextBox.Size = new System.Drawing.Size(422, 30);
             this.rePasswordTextBox.TabIndex = 12;
             // 
             // phoneLabel
@@ -263,18 +249,6 @@
             this.signUpButton.Text = "Sign Up";
             this.signUpButton.UseVisualStyleBackColor = false;
             this.signUpButton.Click += new System.EventHandler(this.signUpButton_Click);
-            // 
-            // showPasswordButton
-            // 
-            this.showPasswordButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showPasswordButton.FlatAppearance.BorderSize = 0;
-            this.showPasswordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showPasswordButton.Location = new System.Drawing.Point(422, 378);
-            this.showPasswordButton.Name = "showPasswordButton";
-            this.showPasswordButton.Size = new System.Drawing.Size(30, 30);
-            this.showPasswordButton.TabIndex = 20;
-            this.showPasswordButton.Text = "👁";
-            this.showPasswordButton.UseVisualStyleBackColor = true;
             // 
             // leftPanel
             // 

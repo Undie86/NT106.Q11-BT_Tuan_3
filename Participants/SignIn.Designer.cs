@@ -43,7 +43,6 @@
             this.leftPanel = new System.Windows.Forms.Panel();
             this.meaningfulLabel = new System.Windows.Forms.Label();
             this.buildingLabel = new System.Windows.Forms.Label();
-            this.showPasswordButton = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.rightPanel = new System.Windows.Forms.Panel();
             this.leftPanel.SuspendLayout();
@@ -117,7 +116,8 @@
             this.passwordTextBox.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.passwordTextBox.Location = new System.Drawing.Point(30, 268);
             this.passwordTextBox.Name = "passwordTextBox";
-            this.passwordTextBox.Size = new System.Drawing.Size(392, 30);
+            this.passwordTextBox.PasswordChar = '*';
+            this.passwordTextBox.Size = new System.Drawing.Size(422, 30);
             this.passwordTextBox.TabIndex = 6;
             // 
             // rememberCheckBox
@@ -218,24 +218,11 @@
             this.buildingLabel.TabIndex = 1;
             this.buildingLabel.Text = "\"Building meaningful experiences together.\"";
             // 
-            // showPasswordButton
-            // 
-            this.showPasswordButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showPasswordButton.FlatAppearance.BorderSize = 0;
-            this.showPasswordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.showPasswordButton.Location = new System.Drawing.Point(422, 268);
-            this.showPasswordButton.Name = "showPasswordButton";
-            this.showPasswordButton.Size = new System.Drawing.Size(30, 30);
-            this.showPasswordButton.TabIndex = 20;
-            this.showPasswordButton.Text = "👁";
-            this.showPasswordButton.UseVisualStyleBackColor = true;
-            // 
             // mainPanel
             // 
             this.mainPanel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.mainPanel.Controls.Add(this.signUpButton);
             this.mainPanel.Controls.Add(this.logoLabel);
-            this.mainPanel.Controls.Add(this.showPasswordButton);
             this.mainPanel.Controls.Add(this.titleLabel);
             this.mainPanel.Controls.Add(this.welcomeLabel);
             this.mainPanel.Controls.Add(this.emailLabel);
