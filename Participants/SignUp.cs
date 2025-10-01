@@ -280,6 +280,10 @@ namespace Participants
             {
                 MessageBox.Show("Please check your email");
             }
+            else if (PasswordCheck.IsValidPassword(passwordTextBox.Text) == false )
+            {
+                MessageBox.Show("Please enter a stronger password");
+            }
             else if (rePasswordTextBox.Text != passwordTextBox.Text)
             {
                 MessageBox.Show("Please retype your password");
@@ -291,11 +295,13 @@ namespace Participants
                     MessageBox.Show("Email was already registered, try a new email");
                     return;
                 }
+
                 if (UsernameAlreadyRegistered.isUserRegistered(username))
                 {
                     MessageBox.Show("Username was already registered, try a new name");
                     return;
                 }
+
                 using (SqlConnection conn = DatabaseConnection.GetConnection())
                 {
                     conn.Open();
@@ -305,11 +311,11 @@ namespace Participants
                     cmd.Parameters.AddWithValue("@Password", password);
                     cmd.ExecuteNonQuery();
                 }
+
                 MessageBox.Show("Signup Successful", "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 SignIn log = new SignIn();
                 log.Show();
                 this.Hide();
-
             }
         }
     }

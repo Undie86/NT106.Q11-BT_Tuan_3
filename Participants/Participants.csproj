@@ -169,6 +169,7 @@
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="EmailAlreadyRegistered.cs" />
     <Compile Include="IsValidGmail.cs" />
+    <Compile Include="PasswordCheck.cs" />
     <Compile Include="PasswordHashing.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
