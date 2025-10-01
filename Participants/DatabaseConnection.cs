@@ -6,7 +6,7 @@ namespace Participants
 {
     public static class DatabaseConnection
     {
-        private static readonly string connectionString = "Server=192.168.0.89,1436;Database=LMS;User Id=LMSUser;Password=1234";
+        private static readonly string connectionString = "Server=192.168.0.89,1436;Database=LMS;User Id=LMSUser;Password=1234;Encrypt=False";
         
         public static SqlConnection GetConnection()
         {
