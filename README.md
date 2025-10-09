@@ -2,7 +2,7 @@
 
 ## Giới thiệu
 
-Repository này chứa các bài tập tuần 3 của môn NT106.Q11, tập trung vào các bài tập lập trình C# cơ bản. Trong đó bao gồm bài tập Exercise2.2 yêu cầu thực hiện các thao tác với giao diện người dùng Windows Forms.
+Repository này chứa các bài tập tuần 3 của môn NT106.Q14, tập trung vào các bài tập lập trình C# cơ bản. Trong đó bao gồm bài tập Exercise2.2 yêu cầu thực hiện các thao tác với giao diện người dùng Windows Forms.
 
 ## Thành viên
 
