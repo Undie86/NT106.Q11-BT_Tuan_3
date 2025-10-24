@@ -166,8 +166,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="EmailAlreadyRegistered.cs" />
     <Compile Include="IsValidGmail.cs" />
     <Compile Include="PasswordCheck.cs" />
     <Compile Include="PasswordHashing.cs" />
@@ -196,7 +194,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsernameAlreadyRegistered.cs" />
     <EmbeddedResource Include="SignIn.resx">
       <DependentUpon>SignIn.cs</DependentUpon>
     </EmbeddedResource>
