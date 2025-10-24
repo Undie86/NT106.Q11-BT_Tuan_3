@@ -268,55 +268,77 @@ namespace Participants
 
         private void signUpButton_Click(object sender, EventArgs e)
         {
-            string email = emailTextBox.Text;
-            string username = usernameTextBox.Text;
-            string password = PasswordHashing.HashPassword(passwordTextBox.Text);
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(fullnameTextBox.Text) || string.IsNullOrWhiteSpace(rePasswordTextBox.Text))
-            {
-                MessageBox.Show("Please fill up all the fields");
+            string fullName = fullnameTextBox.Text.Trim();
+            string email = emailTextBox.Text.Trim();
+            string username = usernameTextBox.Text.Trim();
+            string password = passwordTextBox.Text.Trim();
+            string rePassword = rePasswordTextBox.Text.Trim();
 
-            }
-            else if (IsValidGmail.GmailCheck(email) == false)
+            // ✅ Kiểm tra rỗng
+            if (string.IsNullOrWhiteSpace(fullName) ||
+                string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(username) ||
+                string.IsNullOrWhiteSpace(password) ||
+                string.IsNullOrWhiteSpace(rePassword))
             {
-                MessageBox.Show("Please check your email");
+                MessageBox.Show("Please fill up all the fields", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else if (PasswordCheck.IsValidPassword(passwordTextBox.Text) == false )
+
+            // ✅ Kiểm tra email hợp lệ
+            if (!IsValidGmail.GmailCheck(email))
             {
-                MessageBox.Show("Please enter a stronger password");
+                MessageBox.Show("Please enter a valid Gmail address", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else if (rePasswordTextBox.Text != passwordTextBox.Text)
+
+            // ✅ Kiểm tra độ mạnh của password
+            if (!PasswordCheck.IsValidPassword(password))
             {
-                MessageBox.Show("Please retype your password");
+                MessageBox.Show("Please enter a stronger password", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+
+            // ✅ Kiểm tra nhập lại mật khẩu
+            if (password != rePassword)
             {
-                if (EmailAlreadyRegistered.isEmailRegistered(email))
+                MessageBox.Show("Passwords do not match", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                // ⚙️ Không hash ở client — gửi mật khẩu gốc để server tự hash
+                string request = $"REGISTER|{username}|{password}|{email}";
+
+                ServerConnection conn = new ServerConnection();
+                string response = conn.SendRequest(request);
+
+                // ✅ Phân tích phản hồi từ server
+                string[] parts = response.Split('|');
+                string status = parts[0];
+                string message = parts.Length > 1 ? parts[1] : "Unknown response";
+
+                if (status == "SUCCESS")
                 {
-                    MessageBox.Show("Email was already registered, try a new email");
-                    return;
-                }
+                    MessageBox.Show("Signup successful!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                if (UsernameAlreadyRegistered.isUserRegistered(username))
+                    // Quay về màn hình đăng nhập
+                    SignIn log = new SignIn();
+                    log.Show();
+                    this.Hide();
+                }
+                else
                 {
-                    MessageBox.Show("Username was already registered, try a new name");
-                    return;
+                    MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                using (SqlConnection conn = DatabaseConnection.GetConnection())
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand("INSERT INTO LMSData (username, Email, password) VALUES (@Username, @Email, @Password)", conn);
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Password", password);
-                    cmd.ExecuteNonQuery();
-                }
-
-                MessageBox.Show("Signup Successful", "info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SignIn log = new SignIn();
-                log.Show();
-                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error connecting to server: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
     }
 }

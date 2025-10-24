@@ -177,57 +177,51 @@ namespace Participants
 
         private void signInButton_Click(object sender, EventArgs e)
         {
-            string username = usernameTextBox.Text;
-            string password = passwordTextBox.Text;
 
-            // Check the account is locking or not
+            string username = usernameTextBox.Text.Trim();
+            string password = passwordTextBox.Text.Trim();
+
+            // 1️⃣ Kiểm tra khóa tạm thời
             if (DateTime.Now < lockoutEndTime)
             {
                 double secondsLeft = (lockoutEndTime - DateTime.Now).TotalSeconds;
-                MessageBox.Show($"Your account has been locked for {Math.Ceiling(secondsLeft)} seccond(s).");
+                MessageBox.Show($"Your account has been locked for {Math.Ceiling(secondsLeft)} second(s).");
                 return;
             }
 
-            using (SqlConnection conn = DatabaseConnection.GetConnection())
+            // 3️⃣ Tạo request gửi đến server
+            string request = $"LOGIN|{username}|{password}";
+            ServerConnection conn = new ServerConnection(); 
+            string response = conn.SendRequest(request);
+
+            // 4️⃣ Phân tích phản hồi từ server
+            string[] parts = response.Split('|');
+            string status = parts[0];
+            string message = parts.Length > 1 ? parts[1] : "Unknown response";
+
+            if (status == "SUCCESS")
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT Password FROM LMSData WHERE username = @Username", conn);
-                cmd.Parameters.AddWithValue("@Username", username);
-                object result = cmd.ExecuteScalar();
+                MessageBox.Show(message, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                failedAttempts = 0; // reset
+            }
+            else
+            {
+                failedAttempts++;
 
-                if (result == null || result == DBNull.Value)
+                if (failedAttempts >= maxAttempts)
                 {
-                    MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                string storedHash = result.ToString();
-
-                bool ok = PasswordHashing.VerifyPassword(password, storedHash);
-
-                if (ok)
-                {
-                    MessageBox.Show("Login Successful", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    failedAttempts = 0; //reset again
+                    lockoutEndTime = DateTime.Now.AddSeconds(lockoutSeconds);
+                    failedAttempts = 0;
+                    MessageBox.Show($"Wrong password {maxAttempts} time(s). Your account has been locked for {lockoutSeconds} second(s).");
                 }
                 else
                 {
-                    //MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    // Avoid Brute Force, lock account if failed  5 times in 60s
-                    failedAttempts++;
-                    if (failedAttempts >= maxAttempts)
-                    {
-                        lockoutEndTime = DateTime.Now.AddSeconds(lockoutSeconds);
-                        failedAttempts = 0; // reset again
-                        MessageBox.Show($"Wrong password {maxAttempts} time(s). Your account has been locked for {lockoutSeconds} seccond(s).");
-                    }
-                    else
-                    {
-                        int attemptsLeft = maxAttempts - failedAttempts;
-                        MessageBox.Show($"Invalid login credentials. You have {attemptsLeft} more try.");
-                    }
+                    int attemptsLeft = maxAttempts - failedAttempts;
+                    MessageBox.Show($"Invalid login credentials. You have {attemptsLeft} more try.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
     }
 }
+
