@@ -166,6 +166,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AesEncryption.cs" />
     <Compile Include="IsValidGmail.cs" />
     <Compile Include="PasswordCheck.cs" />
     <Compile Include="PasswordHashing.cs" />

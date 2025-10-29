@@ -74,25 +74,25 @@ namespace LMS_Server
             switch (cmd)
             {
                 case "LOGIN":
-                    return HandleLogin(parts[1], parts[2]); // username, password gốc
+                    return HandleLogin(parts[1], parts[2]); // username, password mã hóa
 
                 case "REGISTER":
-                    return HandleRegister(parts[1], parts[2], parts[3]); // username, password gốc, email
+                    return HandleRegister(parts[1], parts[2], parts[3]); // username, password đã hashed, email
 
-                case "FORGOT":
-                    return HandleForgotPassword(parts[1], parts[2]); // username, email
+                case "UPDATE_PASSWORD":
+                    return HandleUpdatePassword(parts[1], parts[2]); 
 
                 default:
                     return "FAIL|Lệnh không hợp lệ";
             }
         }
 
-        // ✅ Đăng nhập: server tự verify hash
         private string HandleLogin(string username, string password)
         {
             try
             {
-                bool isValid = db.CheckLogin(username, password);
+                string encryptedPassword = AESEncryption.Decrypt(password);
+                bool isValid = db.CheckLogin(username, encryptedPassword);
                 return isValid ? "SUCCESS|Đăng nhập thành công" : "FAIL|Sai tên đăng nhập hoặc mật khẩu";
             }
             catch (Exception ex)
@@ -102,12 +102,11 @@ namespace LMS_Server
             }
         }
 
-        // ✅ Đăng ký: server hash password trước khi lưu
         private string HandleRegister(string username, string password, string email)
         {
             try
             {
-                string hashedPassword = PasswordHashing.HashPassword(password);
+                string hashedPassword = password;
 
                 using (SqlConnection conn = new SqlConnection(@"Data Source=NGUYENDUCKHIEM\SQLEXPRESS;Initial Catalog=LMS;Integrated Security=True;TrustServerCertificate=True"))
                 {
@@ -143,59 +142,34 @@ namespace LMS_Server
             }
         }
 
-        // ✅ Quên mật khẩu: server tự tạo mật khẩu mới, hash trước khi lưu
-        private string HandleForgotPassword(string username, string email)
+        private string HandleUpdatePassword(string email, string newPassword)
         {
             try
             {
+                string hashedPassword = PasswordHashing.HashPassword(newPassword);
+
                 using (SqlConnection conn = new SqlConnection(@"Data Source=NGUYENDUCKHIEM\SQLEXPRESS;Initial Catalog=LMS;Integrated Security=True;TrustServerCertificate=True"))
                 {
                     conn.Open();
-
-                    string checkQuery = "SELECT COUNT(*) FROM LMSData WHERE Username = @Username AND Email = @Email";
-                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+                    string query = "UPDATE LMSData SET Password = @Password WHERE Email = @Email";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        checkCmd.Parameters.AddWithValue("@Username", username);
-                        checkCmd.Parameters.AddWithValue("@Email", email);
+                        cmd.Parameters.AddWithValue("@Password", hashedPassword);
+                        cmd.Parameters.AddWithValue("@Email", email);
+                        int rows = cmd.ExecuteNonQuery();
 
-                        int exists = (int)checkCmd.ExecuteScalar();
-                        if (exists == 0)
-                            return "FAIL|Không tìm thấy tài khoản phù hợp";
+                        if (rows > 0)
+                            return "SUCCESS|Đổi mật khẩu thành công";
+                        else
+                            return "FAIL|Không tìm thấy tài khoản với email này";
                     }
-
-                    //  Tạo mật khẩu ngẫu nhiên mới
-                    string newPasswordPlain = GenerateRandomPassword();
-                    string newPasswordHash = PasswordHashing.HashPassword(newPasswordPlain);
-
-                    //  Cập nhật DB
-                    string updateQuery = "UPDATE LMSData SET Password = @Password WHERE Username = @Username";
-                    using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
-                    {
-                        updateCmd.Parameters.AddWithValue("@Password", newPasswordHash);
-                        updateCmd.Parameters.AddWithValue("@Username", username);
-                        updateCmd.ExecuteNonQuery();
-                    }
-
-                    // Trong thực tế: gửi email newPasswordPlain
-                    return $"SUCCESS|Mật khẩu mới của bạn là: {newPasswordPlain}";
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Lỗi quên mật khẩu: " + ex.Message);
+                Console.WriteLine("Lỗi đổi mật khẩu: " + ex.Message);
                 return "FAIL|Server error: " + ex.Message;
             }
-        }
-
-        //  Hàm tạo mật khẩu ngẫu nhiên
-        private string GenerateRandomPassword(int length = 8)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            Random rnd = new Random();
-            char[] buffer = new char[length];
-            for (int i = 0; i < length; i++)
-                buffer[i] = chars[rnd.Next(chars.Length)];
-            return new string(buffer);
         }
     }
 }

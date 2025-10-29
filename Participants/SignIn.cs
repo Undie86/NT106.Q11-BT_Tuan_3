@@ -181,7 +181,7 @@ namespace Participants
             string username = usernameTextBox.Text.Trim();
             string password = passwordTextBox.Text.Trim();
 
-            // 1️⃣ Kiểm tra khóa tạm thời
+            // Kiểm tra khóa tạm thời
             if (DateTime.Now < lockoutEndTime)
             {
                 double secondsLeft = (lockoutEndTime - DateTime.Now).TotalSeconds;
@@ -189,12 +189,14 @@ namespace Participants
                 return;
             }
 
-            // 3️⃣ Tạo request gửi đến server
-            string request = $"LOGIN|{username}|{password}";
+            //  Tạo request gửi đến server
+            string encryptedPassword = AESEncryption.Encrypt(password);
+            string request = $"LOGIN|{username}|{encryptedPassword}";
+           
             ServerConnection conn = new ServerConnection(); 
             string response = conn.SendRequest(request);
 
-            // 4️⃣ Phân tích phản hồi từ server
+            // Phân tích phản hồi từ server
             string[] parts = response.Split('|');
             string status = parts[0];
             string message = parts.Length > 1 ? parts[1] : "Unknown response";
@@ -202,6 +204,7 @@ namespace Participants
             if (status == "SUCCESS")
             {
                 MessageBox.Show(message, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
                 failedAttempts = 0; // reset
             }
             else

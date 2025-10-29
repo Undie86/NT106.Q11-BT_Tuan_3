@@ -274,7 +274,7 @@ namespace Participants
             string password = passwordTextBox.Text.Trim();
             string rePassword = rePasswordTextBox.Text.Trim();
 
-            // ✅ Kiểm tra rỗng
+            // Kiểm tra rỗng
             if (string.IsNullOrWhiteSpace(fullName) ||
                 string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(username) ||
@@ -285,21 +285,21 @@ namespace Participants
                 return;
             }
 
-            // ✅ Kiểm tra email hợp lệ
+            // Kiểm tra email hợp lệ
             if (!IsValidGmail.GmailCheck(email))
             {
                 MessageBox.Show("Please enter a valid Gmail address", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ Kiểm tra độ mạnh của password
+            // Kiểm tra độ mạnh của password
             if (!PasswordCheck.IsValidPassword(password))
             {
                 MessageBox.Show("Please enter a stronger password", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // ✅ Kiểm tra nhập lại mật khẩu
+            // Kiểm tra nhập lại mật khẩu
             if (password != rePassword)
             {
                 MessageBox.Show("Passwords do not match", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -308,13 +308,13 @@ namespace Participants
 
             try
             {
-                // ⚙️ Không hash ở client — gửi mật khẩu gốc để server tự hash
-                string request = $"REGISTER|{username}|{password}|{email}";
+                string hashedPassword = PasswordHashing.HashPassword(password);
+                string request = $"REGISTER|{username}|{hashedPassword}|{email}";
 
                 ServerConnection conn = new ServerConnection();
                 string response = conn.SendRequest(request);
 
-                // ✅ Phân tích phản hồi từ server
+                // Phân tích phản hồi từ server
                 string[] parts = response.Split('|');
                 string status = parts[0];
                 string message = parts.Length > 1 ? parts[1] : "Unknown response";
